@@ -35,19 +35,22 @@ const keywordResponses = {
       革命: '革命不是请客吃饭，而是一个阶级推翻另一个阶级的斗争。',
       群众: '人民，只有人民，才是创造世界历史的动力。',
       实事求是: '实事求是，是我们党的思想路线的核心。',
-      你好: '你好，同志，我是毛泽东。'
+      你好: '你好，同志，我是毛泽东。',
+	  你是谁:'你好，我是毛泽东。'
     },
     周恩来: {
       外交: '外交工作要讲究策略，要坚定也要灵活。',
       青年: '为中华之崛起而读书。',
       团结: '团结是我们取得胜利的基础。',
-      你好: '你好，同志，我是周恩来。'
+      你好: '你好，同志，我是周恩来。',
+	  你是谁:'你好，我是周恩来。'
     },
     彭德怀: {
       军队: '军队是为人民服务的武装力量。',
       战争: '我们不怕战争，但也不轻易发动战争。',
       原则: '我宁愿站着死，也不跪着生。',
-      你好: '你好，同志，我是彭德怀。'
+      你好: '你好，同志，我是彭德怀。',
+	  你是谁:'你好，我是彭德怀。'
     }
   },
   en: {
@@ -55,19 +58,22 @@ const keywordResponses = {
       revolution: 'Mao Zedong: Revolution is not a dinner party, it is a violent struggle of one class overthrowing another.',
       people: 'Mao Zedong: The people, and the people alone, are the motive force in the making of world history.',
       truth: 'Mao Zedong: Seek truth from facts—that is the core of our line.',
-      Hello: 'Hi, comrade. I am Mao Zedong.'
+      Hello: 'Hi, comrade. I am Mao Zedong.',
+	  'who are you': 'Hello, comrade. I am Mao Zedong.'
     },
     'Zhou Enlai': {
       diplomacy: 'Zhou Enlai: Diplomacy requires both firmness and flexibility.',
       youth: 'Zhou Enlai: I studied for the rise of China.',
       unity: 'Zhou Enlai: Unity is the cornerstone of our success.',
-      Hello: 'Hi, comrade. I am Zhou Enlai.'
+      Hello: 'Hi, comrade. I am Zhou Enlai.',
+	  'who are you': 'Hello, comrade. I am Zhou Enlai.'
     },
     'Peng Dehuai': {
       army: 'Peng Dehuai: The army is the armed force to serve the people.',
       war: 'Peng Dehuai: We do not fear war, but we do not initiate it lightly.',
       principle: 'Peng Dehuai: I’d rather die standing than live kneeling.',
-      Hello: 'Hi, comrade. I am Peng Dehuai.'
+      Hello: 'Hi, comrade. I am Peng Dehuai.',
+	  'who are you': 'Hello, comrade. I am Peng Dehuai.'
     }
   }
 };
