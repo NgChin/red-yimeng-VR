@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>红色沂蒙纪念馆</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #7b1c1c;
+      color: white;
+    }
+
+    header {
+      padding: 16px 10px;
+      text-align: center;
+      background-color: #5a1212;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 1.8em;
+      font-weight: bold;
+    }
+
+    header h2 {
+      margin: 10px 0 0;
+      font-weight: normal;
+      font-size: 0.85em;
+      color: #e0e0e0;
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 15px;
+      margin: 20px;
+    }
+
+    .controls label {
+      font-weight: bold;
+      font-size: 1em;
+    }
+
+    .controls select {
+      background-color: #a73333;
+      border: none;
+      color: white;
+      padding: 10px 16px;
+      border-radius: 6px;
+      font-size: 1em;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      max-width: 100%;
+    }
+
+    .controls select:hover {
+      background-color: #c74646;
+      transform: scale(1.05);
+    }
+
+    .chat-container {
+      max-width: 800px;
+      width: 95%;
+      margin: 0 auto;
+      background-color: #8b2d2d;
+      border-radius: 10px;
+      padding: 20px;
+      min-height: 400px;
+      overflow-y: auto;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .chat-history {
+		height: 300px;              /* 限制聊天框高度为 300 像素 */
+		overflow-y: auto;           /* 开启垂直方向滚动条（超出内容时） */
+		border: 1px solid #ccc;     /* 添加边框方便视觉分隔 */
+		padding: 10px;              /* 内边距让文字不贴边 */
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 10px;
+    }
+
+    .chat-header {
+      padding: 10px;
+      font-size: 1.5em;
+      font-weight: bold;
+      border-bottom: 2px solid #a63333;
+      margin-bottom: 20px;
+    }
+
+    .message {
+      padding: 10px 14px;
+      border-radius: 12px;
+      line-height: 1.5;
+      word-break: break-word;
+      white-space: pre-wrap;
+      font-size: 1em;
+      max-width: 75%;
+    }
+
+    .user {
+      background-color: #d34e4e;
+      align-self: flex-end;
+      text-align: right;
+    }
+
+    .ai {
+      background-color: #5a1f1f;
+      align-self: flex-start;
+      text-align: left;
+    }
+
+    .input-box {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      max-width: 800px;
+      width: 95%;
+      margin: 20px auto;
+    }
+
+    .input-box input {
+      flex: 1;
+      padding: 10px;
+      font-size: 1em;
+      border: none;
+      border-radius: 6px;
+      width: 100%;
+    }
+
+    .input-box button {
+      padding: 10px;
+      font-size: 1em;
+      background-color: #a73333;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .input-box button:hover {
+      background-color: #c74646;
+      transform: scale(1.05);
+    }
+
+    /* 响应式支持（小屏幕） */
+    @media screen and (max-width: 600px) {
+      header h1 {
+        font-size: 2em;
+      }
+
+      header h2 {
+        font-size: 1em;
+      }
+
+      .controls {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+
+      .input-box {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .chat-container {
+        padding: 15px;
+        min-height: 300px;
+      }
+
+      .message {
+        font-size: 0.95em;
+        max-width: 100%;
+      }
+	  
+	  .loader {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #ffffff;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  animation: spin 1s linear infinite;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 10px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+    }
+  </style>
+</head>
+</head>
+<body>
+  <header>
+    <h1 id="main-title">红色沂蒙纪念馆</h1>
+    <h2 id="sub-title">AI革命人物对话系统（实验）</h2>
+  </header>
+
+  <div class="controls">
+    <label for="langSelect" id="lang-label">语言选择：</label>
+    <select onchange="setLanguage(this.value)" id="langSelect">
+      <option value="zh">中文</option>
+      <option value="en">English</option>
+      <option value="more">更多语言支持正在开发中</option>
+    </select>
+
+    <label for="characterSelect" id="character-label">人物选择：</label>
+    <select onchange="handleCharacterSelection(this.value)" id="characterSelect">
+      <option value="毛泽东">毛泽东</option>
+      <option value="周恩来">周恩来</option>
+      <option value="彭德怀">彭德怀</option>
+      <option value="more">其他人物正在添加中</option>
+    </select>
+  </div>
+
+  <div class="chat-container">
+    <div id="chat-header" class="chat-header">毛泽东</div>
+    <div class="chat-history" id="chat"></div>
+  </div>
+
+  <div class="input-box">
+    <input type="text" id="userInput" placeholder="请输入您的问题..." onkeydown="handleKeyDown(event)" />
+    <button onclick="sendMessage()" id="send-button">发送</button>
+  </div>
+  
+  <div class="footer">
+    <div>红色沂蒙纪念馆|Red Yimeng Memorial Hall</div>
+    <div>联系电话：4399-000000 地址：山东省临沂市沂水县顺天河路4号</div>
+    <div>本AI对话系统得益于ChatGPT大力帮助、智谱AI的大模型支持以及Github的免费挂载支持，在此特表感谢</div>
+  </div>
+
+  <style>
+    .footer {
+      background-color: #5a1212;
+      color: white;
+      padding: 10px;
+      text-align: center;
+      font-size: 0.5em; /* 缩小字体大小 */
+      position: relative;
+      width: 100%;
+      z-index: 10;
+    }
+
+    .footer div {
+      margin-bottom: 8px; /* 调整文字间距 */
+    }
+
+    /* 增加底部空间以避免遮挡输入框和聊天框 */
+    .chat-container {
+      margin-bottom: 20px;
+    }
+
+    .input-box {
+      margin-bottom: 40px;
+    }
+  </style>
+  
+  <script src="chat_logic.js"></script>
+
+  <script>
+    let currentCharacter = '毛泽东';
+    let language = 'zh';
+    let chatHistory = [];
+	let aiLoadingId = 'ai-loading';
+
+    const texts = {
+      zh: {
+        title: '红色沂蒙纪念馆',
+        subtitle: '红色VR体验厅之与革命人物面对面对话系统',
+        inputPlaceholder: '请输入您的问题...',
+        send: '发送',
+        langLabel: '语言选择：',
+        characterLabel: '人物选择：',
+        characters: ['毛泽东', '周恩来', '彭德怀', '其他人物正在添加中'],
+        langOptions: ['中文', 'English', '更多语言支持正在开发中'],
+        moreCharactersAlert: 'AI对话系统目前正在建设中\n其他人物目前正在陆续添加\n谢谢您的理解。',
+        moreLanguagesAlert: 'AI对话系统目前正在建设中\n其他相关语言支持正在努力添加\n谢谢您的理解。'
+      },
+      en: {
+        title: 'Red Yimeng Memorial Hall',
+        subtitle: 'Red VR Experience: Face-to-Face Dialogues with Revolutionary Figures',
+        inputPlaceholder: 'Enter your question...',
+        send: 'Send',
+        langLabel: 'Language:',
+        characterLabel: 'Figure:',
+        characters: ['Mao Zedong', 'Zhou Enlai', 'Peng Dehuai', 'More figures coming soon'],
+        langOptions: ['中文', 'English', 'More languages coming soon'],
+        moreCharactersAlert: 'AI Dialogue System under construction\nMore figures are being added\nThank you for your understanding.',
+        moreLanguagesAlert: 'AI Dialogue System under construction\nAdditional language support is in progress\nThank you for your understanding.'
+      }
+    };
+
+    function setLanguage(lang) {
+      const select = document.getElementById('langSelect');
+
+      if (lang === 'more') {
+        alert(texts[language].moreLanguagesAlert);
+        // 还原为原来的语言
+        select.value = language;
+        return;
+      }
+
+      language = lang;
+      const t = texts[lang];
+      document.getElementById('main-title').textContent = t.title;
+      document.getElementById('sub-title').textContent = t.subtitle;
+      document.getElementById('userInput').placeholder = t.inputPlaceholder;
+      document.getElementById('send-button').textContent = t.send;
+      document.getElementById('lang-label').textContent = t.langLabel;
+      document.getElementById('character-label').textContent = t.characterLabel;
+      document.getElementById('chat').innerHTML = '';
+      chatHistory = [];
+      updateCharacterOptions();
+    }
+	
+	function matchReply(userText, replies) {
+		const lowerText = userText.toLowerCase();
+		for (const pair of replies) {
+			if (pair.keywords.some(keyword => lowerText.includes(keyword))) {
+      return pair.reply;
+    }
+  }
+  return null;
+}
+
+    function updateCharacterOptions() {
+      const select = document.getElementById('characterSelect');
+      select.innerHTML = '';
+      texts[language].characters.forEach(char => {
+        const option = document.createElement('option');
+        option.value = char;
+        option.textContent = char;
+        select.appendChild(option);
+      });
+      currentCharacter = texts[language].characters[0];
+      updateChatHeader(currentCharacter);
+    }
+
+    function handleCharacterSelection(value) {
+      if (value.includes('其他') || value.includes('More')) {
+        alert(texts[language].moreCharactersAlert);
+        document.getElementById('characterSelect').value = currentCharacter;
+        return;
+      }
+      currentCharacter = value;
+      updateChatHeader(value);
+    }
+
+    function updateChatHeader(character) {
+      document.getElementById('chat-header').textContent = character;
+    }
+
+    function addMessage(text, sender) {
+      const chat = document.getElementById('chat');
+      const messageDiv = document.createElement('div');
+      messageDiv.className = `message ${sender}`;
+      messageDiv.textContent = text;
+      chat.appendChild(messageDiv);
+      chat.scrollTop = chat.scrollHeight;
+      if (sender !== 'system') chatHistory.push({ sender, text });
+    }
+
+    function sendMessage() {
+      const input = document.getElementById('userInput');
+      const userText = input.value.trim();
+      if (!userText) return;
+      addMessage(userText, 'user');
+      input.value = '';
+      generateAIResponse(userText);
+    }
+
+    function handleKeyDown(event) {
+      if (event.key === 'Enter') {
+        sendMessage();
+      }
+    }
+
+    // 初始化界面
+    updateCharacterOptions();
+  </script>
+</body>
+</html>
